@@ -1,0 +1,340 @@
+
+<style>
+.split-layout {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  align-items: flex-start;
+}
+.left-slider {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto 32px auto;
+}
+.right-slider {
+  width: 100%;
+  overflow-x: auto;
+  display: flex;
+  gap: 24px;
+  padding-bottom: 16px;
+}
+@media (min-width: 900px) {
+  .split-layout {
+    flex-wrap: nowrap;
+    align-items: flex-start;
+  }
+  .left-slider {
+    width: 50%;
+    margin-bottom: 0;
+  }
+  .right-slider {
+    width: 50%;
+    flex-direction: row;
+    gap: 24px;
+    overflow-x: auto;
+    padding-bottom: 0;
+  }
+}
+.image-carousel {
+  position: relative;
+  background: #fafafa;
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  padding: 24px;
+  min-height: 400px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.carousel-img-inner {
+  width: 100%;
+  max-width: 500px;
+  max-height: 500px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+  background: #fff;
+  transition: box-shadow 0.2s;
+}
+.carousel-controls {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 16px;
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+}
+.carousel-controls button {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  font-size: 20px;
+  cursor: pointer;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  transition: background 0.2s, border 0.2s;
+}
+.carousel-controls button:hover {
+  background: #f0f0f0;
+  border-color: #bbb;
+}
+.right-slider {
+  display: flex;
+  flex-direction: row;
+  gap: 24px;
+  overflow-x: auto;
+  padding-bottom: 16px;
+}
+.product-slide {
+  min-width: 320px;
+  max-width: 340px;
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.07);
+  padding: 20px 18px 18px 18px;
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: box-shadow 0.2s, transform 0.2s;
+  border: 1px solid #eee;
+}
+.product-slide:hover {
+  box-shadow: 0 6px 24px rgba(0,0,0,0.13);
+  transform: translateY(-4px) scale(1.02);
+  border-color: #ccc;
+}
+.product-slide img {
+  width: 100%;
+  max-width: 220px;
+  max-height: 220px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 14px;
+  background: #f7f7f7;
+}
+.product-slide h3 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 6px 0;
+  text-align: center;
+}
+.product-slide p {
+  font-size: 1rem;
+  color: #222;
+  margin: 0 0 10px 0;
+  text-align: center;
+}
+.variant-select {
+  margin: 8px 0 8px 0;
+  width: 100%;
+}
+.variant-select label {
+  font-size: 0.97rem;
+  margin-right: 6px;
+}
+.variant-select select {
+  width: 100%;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+  margin-top: 2px;
+}
+.add-btn {
+  background: linear-gradient(90deg, #111 60%, #444 100%);
+  color: #fff;
+  padding: 12px 0;
+  border: none;
+  border-radius: 7px;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1.08rem;
+  font-weight: 600;
+  margin-top: 10px;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+}
+.add-btn:disabled {
+  background: #bbb;
+  color: #fff;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+</style>
+
+<div class="split-layout">
+  <!-- Left: Image Carousel -->
+  {% assign featured_collection = collections['custom-products'] %}
+  <div class="left-slider">
+    <div id="image-carousel" class="image-carousel">
+      {% for p in featured_collection.products limit: 4 %}
+        <div class="carousel-group" data-product-index="{{ forloop.index0 }}" style="{% if forloop.index0 == 0 %}display: block;{% else %}display: none;{% endif %}">
+          {% assign img_count = 0 %}
+          {% for img in p.images %}
+            {% if img_count < 5 %}
+              <img src="{{ img | img_url: '600x600' }}" alt="{{ p.title }} image {{ forloop.index }}" class="carousel-img-inner" style="{% if forloop.index0 == 0 %}display: block;{% else %}display: none;{% endif %}" width="600" height="600">
+              {% assign img_count = img_count | plus: 1 %}
+            {% endif %}
+          {% endfor %}
+          {% for i in (img_count..4) %}
+            <img src="https://via.placeholder.com/600x600?text=No+Image" alt="Placeholder image" class="carousel-img-inner" style="display: none;" width="600" height="600">
+          {% endfor %}
+          <div class="carousel-controls">
+            <button class="carousel-prev">&#8592;</button>
+            <button class="carousel-next">&#8594;</button>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  <!-- Right: Product Slider -->
+  <div class="right-slider">
+    {% for p in featured_collection.products limit: 4 %}
+      <div class="product-slide" data-index="{{ forloop.index0 }}">
+        <img src="{{ p.featured_image | img_url: '300x300' }}" alt="{{ p.title }}" width="300" height="300" />
+        <h3>{{ p.title }}</h3>
+        <p>{{ p.price | money }}</p>
+        {% assign color_option = nil %}
+        {% assign size_option = nil %}
+        {% for option in p.options_with_values %}
+          {% if option.name contains 'Color' or option.name contains 'colour' %}
+            {% assign color_option = option %}
+          {% elsif option.name contains 'Size' %}
+            {% assign size_option = option %}
+          {% endif %}
+        {% endfor %}
+        <div class="variant-select">
+          <label>Color:</label>
+          <select class="variant-select-dropdown" data-option-index="0" {% unless color_option %}disabled{% endunless %}>
+            {% if color_option %}
+              <option disabled selected value="">Choose Color</option>
+              {% for v in color_option.values %}
+                <option value="{{ v }}">{{ v }}</option>
+              {% endfor %}
+            {% else %}
+              <option disabled selected value="">No Color Option</option>
+            {% endif %}
+          </select>
+        </div>
+        <div class="variant-select">
+          <label>Size:</label>
+          <select class="variant-select-dropdown" data-option-index="1" {% unless size_option %}disabled{% endunless %}>
+            {% if size_option %}
+              <option disabled selected value="">Choose Size</option>
+              {% for v in size_option.values %}
+                <option value="{{ v }}">{{ v }}</option>
+              {% endfor %}
+            {% else %}
+              <option disabled selected value="">No Size Option</option>
+            {% endif %}
+          </select>
+        </div>
+        <button class="add-btn" data-product-handle="{{ p.handle }}" data-product-index="{{ forloop.index0 }}" {% unless color_option and size_option %}disabled style="opacity:0.5;cursor:not-allowed;"{% endunless %}>Add to Cart</button>
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+<script>
+// No dummyVariants needed, will fetch real product data
+
+// Left image sync: show the correct carousel group for the hovered product
+document.querySelectorAll('.product-slide').forEach((slide, index) => {
+  slide.addEventListener('mouseenter', () => {
+    document.querySelectorAll('.carousel-group').forEach(group => group.style.display = 'none');
+    const activeGroup = document.querySelector(`.carousel-group[data-product-index="${index}"]`);
+    if (activeGroup) {
+      activeGroup.style.display = 'block';
+      // Reset to first image in the group
+      const imgs = activeGroup.querySelectorAll('.carousel-img-inner');
+      imgs.forEach((img, i) => img.style.display = i === 0 ? 'block' : 'none');
+      activeGroup.setAttribute('data-active-img', 0);
+    }
+  });
+});
+
+// Carousel next/prev controls
+document.querySelectorAll('.carousel-group').forEach(group => {
+  const imgs = group.querySelectorAll('.carousel-img-inner');
+  if (imgs.length <= 1) return;
+  group.setAttribute('data-active-img', 0);
+  group.querySelector('.carousel-next').addEventListener('click', () => {
+    let idx = parseInt(group.getAttribute('data-active-img'));
+    imgs[idx].style.display = 'none';
+    idx = (idx + 1) % imgs.length;
+    imgs[idx].style.display = 'block';
+    group.setAttribute('data-active-img', idx);
+  });
+  group.querySelector('.carousel-prev').addEventListener('click', () => {
+    let idx = parseInt(group.getAttribute('data-active-img'));
+    imgs[idx].style.display = 'none';
+    idx = (idx - 1 + imgs.length) % imgs.length;
+    imgs[idx].style.display = 'block';
+    group.setAttribute('data-active-img', idx);
+  });
+});
+
+// Add to cart via AJAX (dummy, for demo)
+document.querySelectorAll('.add-btn').forEach(button => {
+  button.addEventListener('click', () => {
+    const slide = button.closest('.product-slide');
+    const handle = button.getAttribute('data-product-handle');
+    const selects = slide.querySelectorAll('.variant-select-dropdown');
+    const selectedOptions = Array.from(selects).map(select => select.value);
+    if (selectedOptions.includes('') || selectedOptions.includes('Choose Color') || selectedOptions.includes('Choose Size')) {
+      alert('⚠️ Please select all variant options.');
+      return;
+    }
+    fetch(`/products/${handle}.js`)
+      .then(res => res.json())
+      .then(product => {
+        const variant = product.variants.find(v => {
+          return v.options.every((opt, idx) => opt === selectedOptions[idx]);
+        });
+        if (!variant) {
+          alert('Variant not found!');
+          return;
+        }
+        return fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items: [{ id: variant.id, quantity: 1 }] })
+        });
+      })
+      .then(() => {
+        // Update cart drawer and show free shipping if needed
+        fetch('/cart.js')
+          .then(res => res.json())
+          .then(cart => {
+            const cartDrawer = document.querySelector('cart-drawer');
+            if (cartDrawer && cartDrawer.renderContents) {
+              cartDrawer.renderContents();
+            } else {
+              window.location.href = '/cart';
+            }
+            // Free shipping logic (front-end message)
+            let freeShippingMsg = document.getElementById('free-shipping-msg');
+            if (!freeShippingMsg) {
+              freeShippingMsg = document.createElement('div');
+              freeShippingMsg.id = 'free-shipping-msg';
+              freeShippingMsg.style = 'background:#e6ffe6;color:#1a7f37;padding:12px 18px;margin:18px 0 0 0;border-radius:8px;font-weight:600;text-align:center;font-size:1.08rem;';
+              document.body.appendChild(freeShippingMsg);
+            }
+            if (cart.total_price >= 5000) { // Shopify cart.total_price is in cents
+              freeShippingMsg.textContent = '🎉 Congratulations! You have unlocked Free Shipping!';
+              freeShippingMsg.style.display = 'block';
+            } else {
+              const left = ((5000 - cart.total_price) / 100).toFixed(2);
+              freeShippingMsg.textContent = `Add $${left} more to get Free Shipping!`;
+              freeShippingMsg.style.display = 'block';
+            }
+          });
+      })
+      .catch(err => console.error('Add to cart failed:', err));
+  });
+});
+</script>
