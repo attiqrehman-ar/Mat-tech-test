@@ -52,7 +52,7 @@ This project customizes the Dawn theme to provide a unique product page experien
    - In your CSS:
      ```css
      h1, h2, h3, h4, h5, h6 { font-family: 'Dancing Script', cursive; }
-     body, p, span, div, a, li, input, select, button { font-family: 'Oswald', sans-serif; }
+     body, p, span, div { font-family: 'Oswald', sans-serif;}
      ```
 
 2. **Assign the Custom Product Template:**
