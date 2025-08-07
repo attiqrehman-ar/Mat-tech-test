@@ -80,7 +80,7 @@ This project customizes the Dawn theme to provide a unique product page experien
 ## Notes
 - No third-party apps or libraries are used.
 - All code is clean, commented, and follows Shopify best practices.
-- For any questions, refer to code comments or contact the developer.
+- For any questions, Do contact me at attiqrehman130@gmail.com .
 
 ---
 
